@@ -1,4 +1,166 @@
-# NextGen AI-Driven Shopping
+# 🛍️ RecommendMe
+
+**A conversational product recommendation engine that replaces the research spiral with one focused conversation.**
+
+The average online shopper spends 45–90 minutes across multiple tabs before purchasing. RecommendMe cuts that to a few targeted questions and a curated result set grounded in real product data and live prices.
+
+### The Problem We Solve
+
+- Search engines return thousands of products. You want the three best ones.
+- Review platforms are gamed. You need trustworthy signals.
+- Shopping forms assume you know what you're looking for. You often don't.
+- Comparison grids are overwhelming. You want to talk through it.
+
+### What RecommendMe Does
+
+1. **Listens** — understands your need in plain language, no forms required
+2. **Asks smart questions** — narrows down context only when necessary
+3. **Generates options** — creates product categories and types at runtime (no hardcoded lists)
+4. **Fetches real data** — pulls live listings, prices, and ratings from shopping APIs
+5. **Keeps the conversation going** — lets you ask follow-ups without restarting
+
+### Who It Is For
+
+- **Shoppers** tired of endless tabs and sponsored listings
+- **Contributors** looking for a clean example of a conversational AI product
+- **Teams** exploring how to build recommendation systems that scale with context
+- **Developers** interested in FastAPI + React patterns for real-time chat flows
+
+### Why This Matters
+
+RecommendMe is not just a feature—it's a proof of concept that **AI can replace friction, not create it**. Every recommendation is grounded in real user context. Every question is there for a reason. Every product is real.
+
+---
+
+## System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      FRONTEND (React + Vite)                    │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Chat Interface                                          │  │
+│  │  - Session Management (sessionStorage)                   │  │
+│  │  - Auth State (localStorage)                             │  │
+│  │  - Message History & Rendering                           │  │
+│  │  - Lazy-Loaded Pages (Chat, Profile, Login)             │  │
+│  └────────────────┬─────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                         │
+                         ▼
+           ┌─────────────────────────┐
+           │  API Bridge Layer       │
+           │  - Query Requests       │
+           │  - Auth Endpoints       │
+           │  - Session Hydration    │
+           │  - Profile Updates      │
+           └────────────┬────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    BACKEND (FastAPI)                             │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Query Pipeline                                          │  │
+│  │  ┌──────────────────────────────────────────────────┐   │  │
+│  │  │ 1. Vagueness Check (AI)                          │   │  │
+│  │  │    ↓                                              │   │  │
+│  │  │ 2. Follow-up Questions (AI) — 5 questions max   │   │  │
+│  │  │    ↓                                              │   │  │
+│  │  │ 3. Recommendation Plan (AI)                       │   │  │
+│  │  │    ↓                                              │   │  │
+│  │  │ 4. Product Fetch (SerpAPI)                        │   │  │
+│  │  │    ↓                                              │   │  │
+│  │  │ 5. Response Formatting & Session Save            │   │  │
+│  │  └──────────────────────────────────────────────────┘   │  │
+│  │                                                           │  │
+│  │  AI Provider Chain (Fallback):                           │  │
+│  │  Groq → OpenAI → Gemini → Ollama                        │  │
+│  │                                                           │  │
+│  │  Session Store: In-memory + Redis (optional)             │  │
+│  │  Auth: CSV + JWT Tokens                                  │  │
+│  │  Profiles: JSON-backed + Avatar Upload                   │  │
+│  └──────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+         │                            │                    │
+         ▼                            ▼                    ▼
+    ┌─────────┐            ┌──────────────────┐   ┌──────────────┐
+    │ OpenAI  │            │   SerpAPI        │   │   Ollama     │
+    │ (GPT-4o)│            │ (Google Shopping)│   │  (Local LLM) │
+    └─────────┘            └──────────────────┘   └──────────────┘
+```
+
+---
+
+## Key Features
+
+- **Runtime AI** — no hardcoded templates, every question and recommendation is generated fresh
+- **Multi-turn clarification** — exactly 5 follow-ups gathered across 2 intelligent rounds
+- **Real product data** — live prices, ratings, and purchase links fetched on demand
+- **Smart fallbacks** — if one AI provider fails, the next takes over automatically
+- **Session persistence** — users can resume conversations across browser sessions
+- **Bearer token auth** — simple JWT authentication without external OAuth
+- **Mobile-responsive** — works seamlessly on desktop, tablet, and phone
+
+---
+
+## Getting Started
+
+Want to see it in action? Clone the repo and run both services locally:
+
+```bash
+# Terminal 1: Backend
+cd RecommendMe-API
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+# Terminal 2: Frontend
+cd RecommendMe-APP
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` and describe a shopping need. The system will handle the rest.
+
+---
+
+## Why Contribute?
+
+- **Learn real patterns** — multi-turn conversation flows, AI orchestration, session management
+- **Small, readable codebase** — not a massive framework, just solid engineering
+- **Active development** — new features ship weekly, PRs reviewed promptly
+- **Clear problems to solve** — from UX polish to new AI providers to performance optimization
+- **Good docs** — every area has architecture notes, not just comments in code
+
+## How it works
+
+1. The user enters a shopping need in the frontend chat interface.
+2. The backend checks whether the query is clear or needs clarification.
+3. If the request is vague, the app asks targeted questions to gather missing context.
+4. The recommendation engine generates a category, product types, and product explanations.
+5. The system fetches real product data and renders the results in the chat UI.
+
+## Getting started
+
+If you want to run the project locally, start with the contributor guide in the repository root and then launch both apps:
+
+```bash
+# Backend
+cd RecommendMe-API
+python -m pip install -r requirements.txt
+python -m pip install -r Requirements/requirements-dev.txt
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+# Frontend
+cd RecommendMe-APP
+npm install
+npm run setup
+npm run dev
+```
+
+## Learn more
+
+- [Contributing](../CONTRIBUTING.md)
+- [Security](../SECURITY.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)# NextGen AI-Driven Shopping
 
 > Building **RecommendMe** — a conversational AI that understands what you need and recommends the best products.
 > No cart. No checkout. Just clarity.

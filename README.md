@@ -1,89 +1,63 @@
-# .github
+# RecommendMe Community Docs
 
-This repository holds **organization-wide community health defaults** for all repositories under **NextGen AI-Driven Shopping**.
+This folder contains the GitHub-facing documentation for RecommendMe. It is the first stop for contributors, reviewers, and anyone trying to understand the project before opening the code.
 
-Files placed here are automatically inherited by any repository in the organization that does not define its own version — keeping standards consistent across the entire codebase without duplicating files everywhere.
+RecommendMe is a conversational product recommendation system. A user describes what they need in plain language, the backend clarifies intent when needed, and the frontend presents ranked product options with live product data and direct purchase links.
 
----
+## What belongs here
 
-## Repository Structure
+- [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, workflow expectations, and pull request hygiene
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for collaboration standards
+- [SECURITY.md](SECURITY.md) for private vulnerability reporting
+- [profile/README.md](profile/README.md) for the public GitHub profile landing page
+- [PULL_REQUEST_TEMPLATE.md](PULL_REQUEST_TEMPLATE.md) for consistent review submissions
 
+## Project at a glance
+
+RecommendMe is split into two applications:
+
+- `RecommendMe-API` is the FastAPI backend that orchestrates query understanding, clarification, recommendation generation, session snapshots, auth, and profile data.
+- `RecommendMe-APP` is the React + Vite frontend that provides the chat experience, authentication screens, profile management, and recommendation rendering.
+
+Together they support a single workflow:
+
+1. A user enters a shopping need in natural language.
+2. The backend checks whether the request is clear or needs clarification.
+3. If needed, the app asks follow-up questions and stores the session state.
+4. Once enough context exists, the backend generates product categories and product types, then fetches real listings.
+5. The frontend renders the results and lets the user continue the conversation.
+
+## Fast start
+
+If you are onboarding to the project, start here:
+
+1. Read [CONTRIBUTING.md](CONTRIBUTING.md).
+2. Review the backend and frontend README files in `RecommendMe-API/README.md` and `RecommendMe-APP/README.md`.
+3. Run both apps locally:
+
+```bash
+# Backend
+cd RecommendMe-API
+python -m pip install -r requirements.txt
+python -m pip install -r Requirements/requirements-dev.txt
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+# Frontend
+cd RecommendMe-APP
+npm install
+npm run setup
+npm run dev
 ```
-.github/
-├── profile/
-│   └── README.md               # Public organization homepage on GitHub
-├── CONTRIBUTING.md             # Default contribution guidelines for all repos
-├── CODE_OF_CONDUCT.md          # Behavioral expectations for all contributors
-└── SECURITY.md                 # How to privately report a security vulnerability
-```
 
----
+4. Open the frontend, send a query, and confirm the backend responds through the full chat flow.
 
-## File Reference
+## Documentation style
 
-| File | Applies To | Purpose |
-|------|------------|---------|
-| `profile/README.md` | GitHub org homepage | Publicly visible landing page shown on the organization's GitHub profile |
-| `CONTRIBUTING.md` | All repos | Branching strategy, PR process, commit conventions, and local setup guidance |
-| `CODE_OF_CONDUCT.md` | All repos | Standards for respectful collaboration; outlines enforcement procedures |
-| `SECURITY.md` | All repos | Instructions for privately reporting vulnerabilities; scope and response SLA |
+The docs in this folder aim to be:
 
----
+- accurate to the current codebase
+- concise enough to scan quickly
+- specific enough to help a new contributor move without guesswork
+- consistent in tone and formatting across all files
 
-## How Inheritance Works
-
-GitHub treats this `.github` repository as the **fallback source** for community health files across the organization.
-
-```
-Does repo X have its own CONTRIBUTING.md?
-        │
-        ├── YES → GitHub uses repo X's version
-        │
-        └── NO  → GitHub falls back to this .github repo's version
-```
-
-This means:
-- Every repo automatically gets these defaults on day one — no manual setup needed
-- Individual repos can **override** any file by adding their own version to their root or `.github/` folder
-- Changes made here propagate to all repos that haven't overridden the file
-
-> **Example:** `recommendme-api` does not have its own `SECURITY.md`, so GitHub surfaces the one from this repo on its Security tab and in its community profile checklist automatically.
-
----
-
-## What Does NOT Live Here
-
-Some files must be defined per-repository and cannot be inherited from this `.github` repo:
-
-| File / Directory | Why it lives in each repo |
-|------------------|--------------------------|
-| `LICENSE` | License terms are specific to each project's codebase |
-| `.github/ISSUE_TEMPLATE/` | Issue templates are scoped to the repo they live in |
-| `.github/pull_request_template.md` | PR templates are scoped to the repo they live in |
-| `.github/workflows/` | GitHub Actions workflows are always repo-specific |
-| Project-specific code or scripts | This repo is config only — no application logic |
-
----
-
-## Making Changes
-
-This repository follows the same contribution process as all others under the organization.
-
-1. Open an **issue** first if you're proposing a significant change to a shared default (e.g. rewriting `CODE_OF_CONDUCT.md`)
-2. Fork or branch, make your changes, and open a **pull request** with a clear description of what's changing and why
-3. Changes that affect all repositories should be reviewed by at least **one other maintainer** before merging
-4. Once merged, the updated default takes effect immediately for all repos that inherit it
-
-For minor corrections (typos, broken links, formatting), a PR without a preceding issue is fine.
-
----
-
-## Maintained By
-
-The core maintainer team of **NextGen AI-Driven Shopping**.
-
-If something here is outdated, incorrect, or missing — open an issue or PR. This is a shared resource and contributions from any team member are welcome.
-
----
-
-*Part of the NextGen AI-Driven Shopping GitHub organization — [RecommendMe](https://github.com/nextgen-ai-driven-shopping/recommendme)*
+If the implementation changes, update the docs here at the same time.
