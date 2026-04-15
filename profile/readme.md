@@ -37,13 +37,13 @@ RecommendMe is not just a feature—it's a proof of concept that **AI can replac
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                      FRONTEND (React + Vite)                    │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  Chat Interface                                          │  │
-│  │  - Session Management (sessionStorage)                   │  │
-│  │  - Auth State (localStorage)                             │  │
-│  │  - Message History & Rendering                           │  │
-│  │  - Lazy-Loaded Pages (Chat, Profile, Login)             │  │
-│  └────────────────┬─────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Chat Interface                                          │   │
+│  │  - Session Management (sessionStorage)                   │   │
+│  │  - Auth State (localStorage)                             │   │
+│  │  - Message History & Rendering                           │   │
+│  │  - Lazy-Loaded Pages (Chat, Profile, Login)              │   │
+│  └────────────────┬─────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
                          │
                          ▼
@@ -56,30 +56,30 @@ RecommendMe is not just a feature—it's a proof of concept that **AI can replac
            └────────────┬────────────┘
                          │
                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    BACKEND (FastAPI)                             │
+┌────────────────────────────────────────────────────────────────┐
+│                    BACKEND (FastAPI)                           │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │  Query Pipeline                                          │  │
-│  │  ┌──────────────────────────────────────────────────┐   │  │
-│  │  │ 1. Vagueness Check (AI)                          │   │  │
-│  │  │    ↓                                              │   │  │
-│  │  │ 2. Follow-up Questions (AI) — 5 questions max   │   │  │
-│  │  │    ↓                                              │   │  │
-│  │  │ 3. Recommendation Plan (AI)                       │   │  │
-│  │  │    ↓                                              │   │  │
-│  │  │ 4. Product Fetch (SerpAPI)                        │   │  │
-│  │  │    ↓                                              │   │  │
-│  │  │ 5. Response Formatting & Session Save            │   │  │
-│  │  └──────────────────────────────────────────────────┘   │  │
-│  │                                                           │  │
+│  │  ┌──────────────────────────────────────────────────┐    │  │
+│  │  │ 1. Vagueness Check (AI)                          │    │  │
+│  │  │    ↓                                             │    │  │
+│  │  │ 2. Follow-up Questions (AI) — 5 questions max    │    │  │
+│  │  │    ↓                                             │    │  │
+│  │  │ 3. Recommendation Plan (AI)                      │    │  │
+│  │  │    ↓                                             │    │  │
+│  │  │ 4. Product Fetch (SerpAPI)                       │    │  │
+│  │  │    ↓                                             │    │  │
+│  │  │ 5. Response Formatting & Session Save            │    │  │
+│  │  └──────────────────────────────────────────────────┘    │  │
+│  │                                                          │  │
 │  │  AI Provider Chain (Fallback):                           │  │
-│  │  Groq → OpenAI → Gemini → Ollama                        │  │
-│  │                                                           │  │
+│  │  Groq → OpenAI → Gemini → Ollama                         │  │
+│  │                                                          │  │
 │  │  Session Store: In-memory + Redis (optional)             │  │
 │  │  Auth: CSV + JWT Tokens                                  │  │
 │  │  Profiles: JSON-backed + Avatar Upload                   │  │
 │  └──────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────────────────┘
          │                            │                    │
          ▼                            ▼                    ▼
     ┌─────────┐            ┌──────────────────┐   ┌──────────────┐
